@@ -25,6 +25,9 @@ const packetPrice = document.querySelector("#packetPrice");
 const packetBenefits = document.querySelector("#packetBenefits");
 const choosePacket = document.querySelector("#choosePacket");
 const hidePacket = document.querySelector("#hidePacket");
+const siteHeader = document.querySelector(".site-header");
+const navToggle = document.querySelector(".nav-toggle");
+const mainNav = document.querySelector("#mainNav");
 
 const packetBenefitsByPlan = {
   Plus: [
@@ -46,7 +49,7 @@ const packetBenefitsByPlan = {
   ],
   Champion: [
     "Everything in Pro.",
-    "Chance to play with David in a Roblox game.",
+    "Chance to play with DavXPro in a Roblox game.",
     "Chance to appear in a video.",
     "Special Champion supporter status."
   ],
@@ -60,6 +63,32 @@ const packetBenefitsByPlan = {
 };
 
 let activePlan = null;
+
+function closeNavigation() {
+  if (!siteHeader || !navToggle) {
+    return;
+  }
+
+  siteHeader.classList.remove("nav-open");
+  navToggle.setAttribute("aria-expanded", "false");
+  navToggle.setAttribute("aria-label", "Open navigation");
+}
+
+if (navToggle && siteHeader) {
+  navToggle.addEventListener("click", () => {
+    const isOpen = siteHeader.classList.toggle("nav-open");
+    navToggle.setAttribute("aria-expanded", String(isOpen));
+    navToggle.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
+  });
+}
+
+if (mainNav) {
+  mainNav.addEventListener("click", (event) => {
+    if (event.target.closest("a, button")) {
+      closeNavigation();
+    }
+  });
+}
 
 if (supportForm) {
   supportForm.action = `https://formsubmit.co/${config.creatorEmail}`;
@@ -263,7 +292,7 @@ function setAuthResult(message, type = "success") {
 }
 
 function getSavedAccount() {
-  const savedAccount = window.localStorage.getItem("davidPlaysAccount");
+  const savedAccount = window.localStorage.getItem("davXProAccount");
   return savedAccount ? JSON.parse(savedAccount) : null;
 }
 
@@ -287,7 +316,7 @@ if (signupForm) {
       password
     };
 
-    window.localStorage.setItem("davidPlaysAccount", JSON.stringify(account));
+    window.localStorage.setItem("davXProAccount", JSON.stringify(account));
     setAuthResult("Account created. You can log in now.", "success");
     signupForm.reset();
   });
